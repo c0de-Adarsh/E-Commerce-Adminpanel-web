@@ -1,0 +1,1 @@
+const strip = require('stripe')
