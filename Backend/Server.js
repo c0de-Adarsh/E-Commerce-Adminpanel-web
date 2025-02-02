@@ -6,7 +6,7 @@ const db = require('./db')
 const route = require('./Routes/Route')
 const fileUpload = require('express-fileupload')
 const cloudinary = require('cloudinary').v2
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 
 
 

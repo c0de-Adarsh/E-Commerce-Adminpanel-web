@@ -23,9 +23,11 @@ const generateToken = (userData) =>{
 const jwtAuthMiddleWare = async( req , res , next) =>{
 
     try {
-        
+       
         const authorization = req.headers.authorization;
+        
 
+      
         if(!authorization){
             return res.status(400).json({
                 message:'Token Not Found',
@@ -35,6 +37,7 @@ const jwtAuthMiddleWare = async( req , res , next) =>{
 
 
         const token = req.headers.authorization.split(' ')[1]
+       
 
         if(!token){
             return res.status(402).json({
@@ -45,7 +48,7 @@ const jwtAuthMiddleWare = async( req , res , next) =>{
 
         //token validation 
 
-        jwt.verify(JWT_SECRET,token, async (err , decoded)=>{
+        jwt.verify(token,process.env.JWT_SECRET, async (err , decoded)=>{
 
             if(err){
                 return res.status(400).json({
@@ -62,7 +65,7 @@ const jwtAuthMiddleWare = async( req , res , next) =>{
                     success:false
                 })
             }
-
+            
             req.user = user
 
             next()

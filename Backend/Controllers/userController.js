@@ -70,7 +70,7 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res) => {
     try {
-
+        console.log("updatePassword function is called");
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -232,7 +232,7 @@ const getUserDetails = async (req, res) => {
 
 const isLogin = async (req, res) => {
     try {
-
+        console.log("updatePassword function is called");
         const userId = req.user._id
         const user = await User.findById(userId)
 
@@ -261,11 +261,11 @@ const isLogin = async (req, res) => {
 
 const updatePassword = async (req, res) => {
 try {
-    
-        const userId = req.user._id
-    
-        const user = await User.findById(userId)
-    
+    console.log("updatePassword function is called");
+       
+   
+        const user = await User.findById(req.user._id)
+        
         const isMatched = await bcrypt.compare(req.body.oldPassword, user.password)
     
         if (!isMatched) {
@@ -287,10 +287,12 @@ try {
     
         await user.save()
     
-        const userid = user._id
+        const userId = user._id
         const email = user.email
     
-        const token = generateToken(userid,email)
+        const token = generateToken(userId,email)
+
+        console.log("Generated Token:", token);
     
         res.status(200).json({
             success:true,
