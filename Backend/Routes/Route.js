@@ -7,6 +7,7 @@ const {registerUser,loginUser, forgotPassword, resetPassword, isLogin, getUserDe
 const { jwtAuthMiddleWare, authorizationRole } = require('../jwt')
 const { createProduct, getAllProducts, getCategoryProducts, getAdminProducts, deleteProduct, updateProduct, getProductDetails, createProductReview, getProductReview, getEveryProduct } = require('../Controllers/productController')
 const { newOrder, getSingleOrder, myOrders, getAllOrders, updateOrder, deleteOrder } = require('../Controllers/orderControllers')
+const { processPayment, sendStripeApiKey } = require('../Controllers/paymentController')
 
 router.route('/registeruser').post(registerUser)
 router.route('/loginuser').post(loginUser)
@@ -53,4 +54,8 @@ router.route('/admin/order/:id').put(jwtAuthMiddleWare,authorizationRole('admin'
 router.route('/admin/order/:id').delete(jwtAuthMiddleWare,deleteOrder)
 
 
+//payment routes
+
+router.route('/payment/process').post(jwtAuthMiddleWare,processPayment)
+router.route('/stripeapikey').get(jwtAuthMiddleWare,sendStripeApiKey)
 module.exports = router
