@@ -1,3 +1,86 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    /* font-family: 'Open Sans', sans-serif; */
+font-family: 'Ubuntu', sans-serif;
+}
+
+
+.nav {
+    z-index: 1000; /* Higher value to ensure it's above other elements */
+  }
+
+.numInput::-webkit-outer-spin-button,
+.numInput::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+}
+
+
+input[type="number"]{
+    -moz-appearance: textfield;
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+.page-item{
+    background-color: rgb(255, 255, 255);
+    list-style: none;
+    border: 1 px solid rgba(0, 0, 0, 0.178);
+    padding: 1vmax 1.5vmax;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.page-item:first-child{
+    border-radius: 5px 0 0 5px;
+}
+
+
+
+
+.shiftToLeft{
+    transform: translateX(-100%);
+}
+.shiftToNeutral{
+    transform: translateX(0%);
+}
+.shiftToNeutralForm{
+    transform: translateX(0%) translateY(-100%) ;
+}
+
+.shiftToRight{
+    transform: translateX(100%);
+}
+
+.MuiDataGrid-columnHeader{
+    background-color: rgb(3, 0, 196);
+    padding: 1vmax !important;
+    color: white;
+    font-weight: 8 00;
+}
+
+
+
+
+
+
+/* Stepper styles */
+.MuiStepConnector-line {
+    display: flex !important;
+  }
+  
+  .MuiStepConnector-root{
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.349);
+  }
+  
+  .MuiStepConnector-root-active,
+  .MuiStepConnector-root-completed {
+     background-color: blue;
+  }
