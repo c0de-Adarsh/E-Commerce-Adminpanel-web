@@ -32,8 +32,8 @@ const NavBar = () => {
 
 
      <ul className='flex md:gap-8 gap-8 md:pr-9 pr-1 justify-center items-center'>
-        <Link><AiOutlineShoppingCart path='/cart' size={25}/></Link>
-        <Link><MdAccountBox  path='/account' size={25}/></Link>
+        <Link to='/cart'><AiOutlineShoppingCart  size={25}/></Link>
+        <Link to='/auth'><MdAccountBox   size={25}/></Link>
      </ul>
 
 

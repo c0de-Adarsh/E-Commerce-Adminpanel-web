@@ -4,6 +4,7 @@ import NavBar from './Components/NavBar'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Contact from './Pages/Contact'
+import SignUpLogin from './Pages/SignUpLogin'
 const App = () => {
   return (
    <>
@@ -14,6 +15,7 @@ const App = () => {
      <Route path='/' element={<Home/>}/>
      <Route path='/about' element={<About/>}/>
      <Route path='/contact' element={<Contact/>}/>
+     <Route path='/auth' element={<SignUpLogin />}/>
     </Routes>
     </BrowserRouter>
    </div>
