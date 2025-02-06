@@ -4,7 +4,7 @@ import {ToastContainer} from 'react-toastify'
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineMail, AiOutlineUnlock } from 'react-icons/ai'
 import { MdOutlineAccountCircle } from "react-icons/md";
 import {useDispatch, useSelector} from 'react-redux'
-import { register } from '../Actions/userActions';
+import { login, register } from '../Actions/userActions';
 import { useNavigate } from 'react-router';
 import 'react-toastify/dist/ReactToastify.css';
 const SignUpLogin = () => {
@@ -69,6 +69,11 @@ const SignUpLogin = () => {
     if(isLogin) {
         navigate('/')
     }
+
+    const loginHandler = (e) =>{
+        e.preventDefault()
+        dispatch(login(loginEmail,loginPassword))
+    }
     return (
         <>
             <Metadata title={name} />
@@ -126,14 +131,14 @@ const SignUpLogin = () => {
 
                         {/* login */}
                         <div className='pt-8'>
-                         <form action="" className={`${name === 'Login' ? 'flex':'hidden'}  flex-col pt-8 gap-5 px-8`}>
+                         <form action="" onSubmit={loginHandler} className={`${name === 'Login' ? 'flex':'hidden'}  flex-col pt-8 gap-5 px-8`}>
                             <div className='relative rounded pl-3 border border-gray-500 py-1 flex items-center justify-around'>
                                 <AiOutlineMail className='text-gray-500' size={26} />
-                                <input type="text" placeholder='Enter Your Email' className=' w-full pl-4  py-1 pr-4 outline-none'/>
+                                <input type="text" placeholder='Enter Your Email' onChange={(e)=> setLoginEmail(e.target.value)} value={loginEmail} className=' w-full pl-4  py-1 pr-4 outline-none'/>
                             </div>
                             <div className='relative px-3 border rounded border-gray-500 py-1 flex justify-around items-center'>
                                 <AiOutlineUnlock className='text-gray-500' size={26}/>
-                                <input type={loginPassType} className=' w-full pl-4  outline-none py-1 pr-4' placeholder='Enter Your Password' />
+                                <input type={loginPassType} value={loginPassword} onChange={(e)=> setLoginPassword(e.target.value)} className=' w-full pl-4  outline-none py-1 pr-4' placeholder='Enter Your Password' />
                                 {
                                     loginPassType === 'password' ? 
                                     <AiOutlineEyeInvisible onClick={()=> setLoginPassType('text')} size={26} /> :

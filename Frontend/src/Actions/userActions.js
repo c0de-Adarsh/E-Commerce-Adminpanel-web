@@ -1,5 +1,5 @@
 
-import {loginSuccess, registerFail, registerRequest, registerSuccess} from '../Slice/UserSlice'
+import {loginFail, loginRequest, loginSuccess, registerFail, registerRequest, registerSuccess} from '../Slice/UserSlice'
 import axios from 'axios'
 import API from '../Utils';
 import { toast } from 'react-toastify';
@@ -26,5 +26,29 @@ export const register = (formData) => async (dispatch) => {
         } else {
             toast.error(error.response.data.message)
         }
+    }
+}
+
+export const login = (email , password) => async (dispatch) =>{
+
+    try {
+        
+        dispatch(loginRequest())
+
+        const config = {
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const {data} = await axios.post(`${API}/loginuser`,{email,password},config)
+
+        localStorage.setItem('token',data.token)
+        dispatch(loginSuccess(data))
+        toast.success('Login Successfuly')
+    } catch (error) {
+        dispatch(loginFail(error.response.data.message))
+        console.log(error.response.data.message)
+        toast.error(error.response.data.message)
     }
 }
