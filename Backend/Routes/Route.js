@@ -5,7 +5,7 @@ const router = express.Router()
 
 const {registerUser,loginUser, forgotPassword, resetPassword, isLogin, getUserDetails, updatePassword, updateProfile, getAllUsers, updateUser, getUser, deleteUser} = require('../Controllers/userController')
 const { jwtAuthMiddleWare, authorizationRole } = require('../jwt')
-const { createProduct, getAllProducts, getCategoryProducts, getAdminProducts, deleteProduct, updateProduct, getProductDetails, createProductReview, getProductReview, getEveryProduct } = require('../Controllers/productController')
+const { createProduct, getAllProducts, getCategoryProducts, getAdminProducts, deleteProduct, updateProduct, getProductDetails, createProductReview, getProductReview, getEveryProduct, delteReview } = require('../Controllers/productController')
 const { newOrder, getSingleOrder, myOrders, getAllOrders, updateOrder, deleteOrder } = require('../Controllers/orderControllers')
 const { processPayment, sendStripeApiKey } = require('../Controllers/paymentController')
 
@@ -35,10 +35,10 @@ router.route('/admin/products').get(jwtAuthMiddleWare,authorizationRole('admin')
 router.route('/products/:id').delete(jwtAuthMiddleWare,authorizationRole('admin'),deleteProduct)
 router.route('/products/:id').put(jwtAuthMiddleWare,authorizationRole('admin'),updateProduct)
 router.route('/products/:id').get(jwtAuthMiddleWare,authorizationRole('admin'),getProductDetails)
-router.route('/reeview/create').post(jwtAuthMiddleWare,createProductReview)
+router.route('/review/create').post(jwtAuthMiddleWare,createProductReview)
 router.route('/reviews').get(getProductReview)
-router.route('/reviews').delete(jwtAuthMiddleWare,getProductReview)
-
+router.route('/reviews').delete(jwtAuthMiddleWare,delteReview)
+router.route('/review').put(jwtAuthMiddleWare,createProductReview)
 
 //payment routes
 router.route('/geteveryproduct').get(getEveryProduct)
