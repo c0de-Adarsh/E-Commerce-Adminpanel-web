@@ -4,45 +4,84 @@ const cloudinary = require('cloudinary').v2
 
 
 
+// const createProduct = async (req, res, next) => {
+//     try {
+      
+//         let images = [];
+
+//         if (req.body.image) {
+//             if (typeof req.body.image === 'string') {
+//                 images.push(req.body.image);
+//             } else {
+//                 images = [req.body.image];
+//             }
+//         }
+      
+//         const imageLinks = [];
+
+//         // Upload images to cloudinary
+//         for (let i = 0; i < images.length; i++) {
+//             const result = await cloudinary.uploader.upload(images[i], {
+//                 folder: 'products'
+//             });
+
+//             imageLinks.push({
+//                 public_id: result.public_id,
+//                 url: result.secure_url
+//             });
+//         }
+
+//         req.body.images = imageLinks;
+//         req.body.user = req.user._id; 
+
+//         const product = await Product.create(req.body);
+        
+//         res.status(201).json({
+//             success: true,
+//             product
+//         });
+
+//     } catch (error) {
+//         console.error('Error creating product:', error); 
+//         res.status(500).json({
+//             success: false,
+//             message: error.message
+//         });
+//     }
+// };
+
+
+
 const createProduct = async (req, res, next) => {
     try {
-      
-        let images = [];
-
-        if (req.body.image) {
-            if (typeof req.body.image === 'string') {
-                images.push(req.body.image);
-            } else {
-                images = [req.body.image];
+        let imageLinks = [];
+        
+        // Check if files exist in form-data
+        if (req.files) {
+            // Upload each file to cloudinary
+            for (const file of Object.values(req.files)) {
+                const result = await cloudinary.uploader.upload(file.tempFilePath, {
+                    folder: 'products'
+                });
+                
+                imageLinks.push({
+                    public_id: result.public_id,
+                    url: result.secure_url
+                });
             }
-        }
-      
-        const imageLinks = [];
-
-        // Upload images to cloudinary
-        for (let i = 0; i < images.length; i++) {
-            const result = await cloudinary.uploader.upload(images[i], {
-                folder: 'products'
-            });
-
-            imageLinks.push({
-                public_id: result.public_id,
-                url: result.secure_url
-            });
         }
 
         req.body.images = imageLinks;
-        req.body.user = req.user._id; 
+        req.body.user = req.user._id;
 
         const product = await Product.create(req.body);
-        
+
         res.status(201).json({
             success: true,
             product
         });
-
     } catch (error) {
-        console.error('Error creating product:', error); 
+        console.error('Error creating product:', error);
         res.status(500).json({
             success: false,
             message: error.message
