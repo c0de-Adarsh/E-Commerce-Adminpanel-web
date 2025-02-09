@@ -10,6 +10,10 @@ import { me } from './Actions/userActions'
 import { ToastContainer, toast } from 'react-toastify';
 import { isLogin as IsLogin } from './Actions/userActions'
 import Dashboard from './Pages/Dashboard'
+import CreateProduct from './Pages/CreateProduct'
+import Product from './Components/Product'
+import ProductDetails from './Pages/ProductDetails'
+import Cart from './Pages/Cart'
 const App = () => {
 
      const dispatch = useDispatch()
@@ -38,6 +42,9 @@ const App = () => {
      <Route path='/contact' element={<Contact/>}/>
      <Route path='/auth' element={<SignUpLogin />}/>
      <Route path='/dashboard' element={<Dashboard/>}/>
+     <Route path='/admin/newProduct' element={<CreateProduct />}/>
+     <Route path='/product/:id' element={<ProductDetails/>}/>
+     <Route path='/cart' element={<Cart/>}/>
     </Routes>
     <ToastContainer
         position="top-right"
