@@ -29,12 +29,12 @@ router.route('/admin/user/:id').delete(jwtAuthMiddleWare,authorizationRole('admi
 
 //product 
 router.route('/product/new').post(jwtAuthMiddleWare,authorizationRole('admin'),createProduct)
-router.route('productbycategory').get(getCategoryProducts)
+router.route('/productbycategory').get(getCategoryProducts)
 router.route('/products').get(getAllProducts)
 router.route('/admin/products').get(jwtAuthMiddleWare,authorizationRole('admin'),getAdminProducts)
 router.route('/products/:id').delete(jwtAuthMiddleWare,authorizationRole('admin'),deleteProduct)
 router.route('/products/:id').put(jwtAuthMiddleWare,authorizationRole('admin'),updateProduct)
-router.route('/products/:id').get(jwtAuthMiddleWare,authorizationRole('admin'),getProductDetails)
+router.route('/products/:id').get(getProductDetails)
 router.route('/review/create').post(jwtAuthMiddleWare,createProductReview)
 router.route('/reviews').get(getProductReview)
 router.route('/reviews').delete(jwtAuthMiddleWare,delteReview)

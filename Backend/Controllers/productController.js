@@ -294,30 +294,49 @@ const getAllProducts = async (req, res) =>{
         try {
             
             const {rating , comment , productId} = req.body
+            const user = req.user;  
 
-            const review = {
-                user: req.user._id,
-                name: user.name,
-                rating: Number(String),
-                comment
+            const product = await Product.findById(productId);
+
+            if (!product) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Product not found"
+                });
             }
+          
 
-            const product = await Product.findById(productId)
+            // Ensure ki product.reviews exist kare
+        if (!product.reviews) {
+            product.reviews = []; 
+        }
+          
 
+
+
+        const review = {
+            user: user._id,
+            name: user.name,
+            rating: Number(rating),
+            comment
+        };
             //user ne phle se review dia hai ya nahi 
-            const isReviwed = product.reviews.find(rev =>rev.user.toString() === req.user._id.toString())
+            const isReviewed = product.reviews.find(
+                (rev) => rev.user.toString() === user._id.toString()
+            );
 
-            if(isReviwed){
-                product.review.forEach(rev =>{
-                    if(req.user.toString() === req.user._id.toString()){
-                        rev.rating = rating
-                        rev.comment = comment
+            if (isReviewed) {
+                product.reviews.forEach((rev) => {
+                    if (rev.user.toString() === user._id.toString()) {
+                        rev.rating = rating;
+                        rev.comment = comment;
                     }
-                })
+                });
             } else {
                 product.reviews.push(review)
-                product.numOfReview = product.review.length
+                
             }
+            product.numOfReviews = product.reviews.length
 
             let avg = 0
 
@@ -334,6 +353,7 @@ const getAllProducts = async (req, res) =>{
                 message: "Review Done"
             })
         } catch (error) {
+            console.log(error)
             res.status(500).json({
                 message:error.message,
                 success:false
