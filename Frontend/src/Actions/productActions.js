@@ -1,6 +1,8 @@
 import axios from "axios"
-import { adminProductFail, adminProductRequest, adminProductSuccess, allProductRequest, allProductSuccess, allReviewFail, allReviewRequest, allReviewSuccess, clearErrors, deleteProductFail, deleteProductRequest, deleteProductSuccess, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, everyProductFail, everyProductRequest, everyProductSuccess, getCategoryProductsFail, getCategoryProductsRequest, getCategoryProductsSuccess, newProductFail, newProductRequest, newProductSuccess, newReviewFail, newReviewRequest, newReviewSuccess, productDeatilsFail, productDetailsRequest, productDetailsSuccess, updateProductFail, updateProductRequest, updateProductSuccess } from "../Slice/ProductSlice"
+import { adminProductFail, adminProductRequest, adminProductSuccess, allProductRequest, allProductSuccess, allReviewFail, allReviewRequest, allReviewSuccess, clearErrors, deleteProductFail, deleteProductRequest, deleteProductSuccess, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, everyProductFail, everyProductRequest, everyProductSuccess, getCategoryProductsFail, getCategoryProductsRequest, getCategoryProductsSuccess, newProductFail, newProductRequest, newProductSuccess, newReviewFail, newReviewRequest, newReviewSuccess,  updateProductFail, updateProductRequest, updateProductSuccess } from "../Slice/ProductSlice"
+import { productDetailsRequest, productDetailsSuccess, productDetailsFail, } from '../Slice/ProductDetailsSlice'
 import API from "../Utils"
+import { toast } from "react-toastify"
 
 export const getProducts = (keyword = "", currentPage = 1, price = [0, 25000], category , ratings = 0) => async (dispatch) => {
 
@@ -28,12 +30,16 @@ export const getProductDetails = (id) => async (dispatch) =>{
     try {
        
         dispatch(productDetailsRequest())
-
+        
          const {data} = await axios.get(`${API}/products/${id}`)
-
-         dispatch(productDetailsSuccess(data.product))
+       
+         dispatch(productDetailsSuccess(data.product)) 
+         
+         //console.log(data)
+        
     } catch (error) {
-        dispatch(productDeatilsFail(error.response.data.message))
+        dispatch(productDetailsFail(error.response.data.message))
+        console.log(error.response.data.message)
     }
 }
 
@@ -50,12 +56,14 @@ export const newReview = (reviewData) => async (dispatch) => {
         }
 
         const { data } = await axios.put(`${API}/review`, reviewData, config);
+        //console.log(data)
 
         dispatch(newReviewSuccess(data.success))
         toast.success("Review Added !")
 
     } catch (err) {
         dispatch(newReviewFail(err.response.data.message));
+        console.log(err.response.data.message)
     }
 }
 
@@ -92,6 +100,7 @@ export const createNewProduct = (productData) => async (dispatch) => {
 
         const { data } = await axios.post(`${API}/product/new`, productData, config)
         toast.success("New Product Created !")
+        
         dispatch(newProductSuccess(data));
     } catch (error) {
         dispatch(newProductFail(error.response.data.message))
@@ -189,13 +198,14 @@ export const getCategoryProducts = (category) => async (dispatch) => {
         dispatch(getCategoryProductsRequest())
 
 
-        const {data} = await axios.get(`/productbycategory?category=${category}`) ;
-
+        const {data} = await axios.get(`${API}/productbycategory?category=${category}`) ;
+       
         dispatch(getCategoryProductsSuccess(data.products)) ;
        
 
     }catch(error){
         dispatch(getCategoryProductsFail(error.response.data.message))
+        console.log(error.response.data.message)
     }
 }
 

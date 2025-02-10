@@ -134,7 +134,7 @@ const getAllProducts = async (req, res) =>{
        
         const products = await Product.find({category: req.query.category})
 
-        console.log(req.query.category)
+        //console.log(req.query.category)
 
         res.status(200).json({
             success:true,
