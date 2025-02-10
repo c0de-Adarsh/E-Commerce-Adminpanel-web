@@ -3,15 +3,49 @@ import Metadata from '../Components/Metadata'
 import {useDispatch, useSelector} from 'react-redux'
 import CartCard from '../Components/CartCard'
 import { LiaRupeeSignSolid } from 'react-icons/lia'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { addItemsToCart, removeAllItemsFromCart } from '../Actions/cartActions'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
   const dispatch = useDispatch()
-
+          const navigate = useNavigate()
   const { cartItems } = useSelector((state) => state.cart)
   const { isLogin } = useSelector((state) => state.user)
 
-  console.log(cartItems)
+  const grossTotal = () => {
+    let sum = 0
+    cartItems.forEach((i) => {
+        sum += i.quantity * i.price
+    })
+    return sum ;
+}
+
+const increaseQuantity = (id, quantity, stock) => {
+  const newQuantity = quantity + 1 ;
+  if(stock <= quantity){
+   return;
+  }
+  dispatch(addItemsToCart(id,newQuantity))
+};
+
+const decreaseQuantity = (id, quantity, stock) => {
+   const newQuantity = quantity - 1 ;
+   if (1 >= quantity) return;
+   if(stock <= quantity){
+    return;
+   }
+   dispatch(addItemsToCart(id,newQuantity))
+};
+
+ const handleCheckOut = () =>{
+  if(isLogin === false){
+    navigate('/auth')
+    toast.info('Please log in to proceed with checkout')
+  } else{
+    navigate("/order/shipping");
+   }
+ }
   return (
   <>
   <Metadata title='Mycart'/>
@@ -41,9 +75,9 @@ const Cart = () => {
             <div>
            <div className=' justify-center pt-10 items-center'>
             <div>
-              <button  className='md:px-3 px-2   font-bold text-xl hover:bg-indigo-700 bg-indigo-900 text-white'>-</button>
-              <input type=""  className='text-center outline-none font-bold md:w-14 w-10 cursor-default '/>
-              <button className='md:px-3 px-2   font-bold text-xl bg-indigo-900 text-white hover:bg-indigo-700'>+</button>
+              <button  className='md:px-3 px-2   font-bold text-xl hover:bg-indigo-700 bg-indigo-900 text-white' onClick={()=> decreaseQuantity(item.product,item.quantity,item.stock)}>-</button>
+              <input type=""  className='text-center outline-none font-bold md:w-14 w-10 cursor-default ' value={item.quantity}/>
+              <button onClick={()=> increaseQuantity(item.product,item.quantity,item.stock)} className='md:px-3 px-2   font-bold text-xl bg-indigo-900 text-white hover:bg-indigo-700'>+</button>
             </div>
            </div>
           </div>
@@ -71,25 +105,25 @@ const Cart = () => {
 
         <div className='flex justify-end md:pr-14 pr-6 pb-12'>
           <span className='text-2xl font-sans border-t border-blue-600 pt-3 pl-12'>
-            Gross Total
+          Gross Total: ₹{grossTotal()}
           </span>
         </div>
 
 
 
         <div className=' flex justify-around '>
-          <button className='bg-red-500 hover:bg-red-600 text-white md:py-2 py-1 text-lg font-medium md:px-10 px-3 '></button>
-          <button className='bg-blue-500 text-white md:py-2 py-1 font-medium md:px-12 px-4 text-lg hover:bg-blue-600'></button>
+          <button className='bg-red-500 hover:bg-red-600 text-white md:py-2 py-1 text-lg font-medium md:px-10 px-3 ' onClick={()=> dispatch(removeAllItemsFromCart())}>Remove All</button>
+          <button onClick={()=>handleCheckOut()} className='bg-blue-500 text-white md:py-2 py-1 font-medium md:px-12 px-4 text-lg hover:bg-blue-600'>Check Out</button>
         </div>
       </div>
       </>
     )
     :
     (
-     <div text-center flex flex-col justify-center items-center pt-16 font-medium md:text-3xl text-2xl>
-      <img src=""  className=' w-56 md:w-64 md:h-64 h-56 ' alt="" />
+     <div className=' text-center flex flex-col justify-center items-center pt-16 font-medium md:text-3xl text-2xl'>Your cart is currently empty.
+      <img src="/Images/cart.gif"  className=' w-56 md:w-64 md:h-64 h-56 ' alt="" />
       <div className='pt-6'>
-        <Link to='/products' className='text-white px-8 text-lg py-2 rounded hover:bg-gray-700 bg-gray-800'></Link>
+        <Link to='/products' className='text-white px-8 text-lg py-2 rounded hover:bg-gray-700 bg-gray-800'>Shop Now</Link>
       </div>
      </div>
     )

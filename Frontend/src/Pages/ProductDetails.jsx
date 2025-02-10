@@ -465,7 +465,7 @@ const ProductDetails = () => {
                             </div>
                         </div>
 
-                        <div className='flex gap-2 pl-6 text-xl font-medium border border-x-0 pt-3 pb-4 border-gray-400 border-t-0'>
+                        <div className='flex gap-2 pl-6 text-xl border border-x-0 pt-3 pb-4 border-gray-400 border-t-0 font-semibold'>
                             Status:
                             <p className={`${product?.stock < 1 ? "text-red-600" : "text-green-600"} font-bold`}>
                                 {product?.stock < 1 ? " Out of Stock" : " In Stock"}
