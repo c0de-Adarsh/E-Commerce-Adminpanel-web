@@ -29,7 +29,7 @@ const processPayment = async (req , res) =>{
  const sendStripeApiKey = async ( req , res) =>{
     try {
    
-        res.status(200).json({stripeApiKey: process.env.STRIPE_SECRET_KEY})
+        res.status(200).json({stripeApiKey:process.env.STRIPE_PUBLISHABLE_KEY})
     } catch (error) {
         res.status(500).json({
             message:error.message,

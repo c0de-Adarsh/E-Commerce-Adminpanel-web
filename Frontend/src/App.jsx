@@ -21,6 +21,8 @@ import API from './Utils'
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js";
 import Payment from './Pages/Payment'
+import Success from './Pages/Success'
+import MyOrders from './Pages/MyOrders'
 const App = () => {
 
   const dispatch = useDispatch()
@@ -37,11 +39,13 @@ const App = () => {
     }
 
     const { data } = await axios.get(`${API}/stripeapikey`, config)
+    //console.log(data)
     setStripeApiKey(data.stripeApiKey)
   }
 
   useEffect(() => {
     dispatch(me())
+    
   }, [dispatch, isLogin, isUpdated])
 
   useEffect(() => {
@@ -68,6 +72,8 @@ const App = () => {
             <Route path='/cart' element={<Cart />} />
             <Route path="/order/shipping" element={<Shipping />} />
             <Route path='/order/confirm' element={<Confirm />} />
+            <Route path='/success' element={<Success/>}/>
+            <Route path="/orders" element={<MyOrders />} />
 
 
             {stripeApiKey &&

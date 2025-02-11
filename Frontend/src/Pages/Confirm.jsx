@@ -12,6 +12,31 @@ const Confirm = () => {
     const dispatch = useDispatch()
 
      const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}`
+
+     const subTotal = () => {
+        let sum = 0
+        cartItems.forEach((i) => {
+            sum += i.quantity * i.price
+        })
+        return sum ;
+    }   
+
+    const subtotal = subTotal() ;
+    const shippingCharges = 20 ;
+    const tax = (subtotal * 20)/100 ;
+    const totalPrice = subtotal + shippingCharges + tax ; 
+
+    const processToPayment = () => {
+        const data = {
+            subtotal,
+            shippingCharges,
+            tax ,
+            totalPrice,
+        }
+        sessionStorage.setItem("orderInfo",JSON.stringify(data)) ;
+
+        navigate("/order/payment")
+    } 
   return (
    <>
    <div className='min-h-screen pt-14 '>
@@ -88,14 +113,14 @@ const Confirm = () => {
             <div className='pt-4 border border-x-0 border-t-0 border-gray-500 pb-4'>
                 <div  className='flex justify-between'>
                     <span className='font-semibold'>Subtotal:</span>
-                    <span>₹ {}</span>
+                    <span>₹ {totalPrice}</span>
                 </div>
 
 
 
                 <div className='flex justify-between pt-3'>
                     <span>GST:</span>
-                    <span>₹ {}</span>
+                    <span>₹ {tax}</span>
                 </div>
             </div>
 
@@ -105,7 +130,7 @@ const Confirm = () => {
             <div >
                 <div className='flex justify-between pt-3'>
                     <span  className='font-semibold'>Total:</span>
-                    <span>₹{}</span>
+                    <span>₹{totalPrice}</span>
                 </div>
             </div>
 
@@ -113,7 +138,7 @@ const Confirm = () => {
 
 
             <div className='pt-4'>
-                <button  className='w-full cursor-pointer bg-blue-600 py-2 text-white font-medium rounded hover:bg-blue-500 '>Proceed To Payment</button>
+                <button  className='w-full cursor-pointer bg-blue-600 py-2 text-white font-medium rounded hover:bg-blue-500 ' onClick={()=> processToPayment()}>Proceed To Payment</button>
             </div>
         </div>
      </div>
