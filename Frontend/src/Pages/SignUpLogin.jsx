@@ -29,7 +29,7 @@ const SignUpLogin = () => {
     const [avatarName, setAvatarName] = useState("Select Profile Pic..")
 
 
-
+ 
     const [loginPassType , setLoginPassType] = useState('password')
     const [registerPassType , setRegisterPassType] = useState('password')
 
