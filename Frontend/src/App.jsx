@@ -23,6 +23,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import Payment from './Pages/Payment'
 import Success from './Pages/Success'
 import MyOrders from './Pages/MyOrders'
+import AllProducts from './Pages/AllProducts'
 const App = () => {
 
   const dispatch = useDispatch()
@@ -74,6 +75,8 @@ const App = () => {
             <Route path='/order/confirm' element={<Confirm />} />
             <Route path='/success' element={<Success/>}/>
             <Route path="/orders" element={<MyOrders />} />
+            <Route path='/products' element={<AllProducts />} />
+            <Route path='/contact' element={<Contact/>}/>
 
 
             {stripeApiKey &&

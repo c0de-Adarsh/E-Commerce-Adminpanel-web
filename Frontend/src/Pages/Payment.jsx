@@ -32,9 +32,12 @@ const Payment = () => {
   }
 
   const order = {
-    shippingInfo,
+    shippingInfo: {
+      ...shippingInfo,
+      pinCode: parseInt(shippingInfo.pinCode) || 0  // String ko Number me convert
+    },
     orderItems: cartItems,
-    itemPrice: orderInfo.shippingCharges,
+    itemPrice: orderInfo.shippingCharges, 
     taxPrice: orderInfo.tax,
     shippingPrice: orderInfo.totalPrice,
     totalPrice: orderInfo.totalPrice

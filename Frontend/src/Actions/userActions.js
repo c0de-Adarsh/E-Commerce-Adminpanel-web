@@ -84,7 +84,7 @@ export const me = () => async (dispatch) =>{
         }
 
         const {data} = await axios.get(`${API}/me`,config)
-        console.log(data)
+ 
 
         dispatch(getMeSuccess(data.user))
     } catch (error) {
