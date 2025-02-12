@@ -166,68 +166,86 @@ const getAllProducts = async (req, res) =>{
     }
   }
 
-  const updateProduct = async (req , res) =>{
+  const updateProduct = async (req, res) => {
     try {
-       
-        const userId = req.user._id
+        let product = await Product.findById(req.params.id);
 
-        const product = await Product.findById(userId)
-
-        if(!product){
-            return res.status(401).json({
-                message:'Product Not Found',
-                success:false
-            })
+        if (!product) {
+            return res.status(404).json({
+                message: 'Product Not Found',
+                success: false
+            });
         }
 
-        let images = []
-
-        if(typeof req.body.images === 'string'){
-            images.push(req.body.images)
-        } else{
-            req.body.images
+        // Handle images
+        let images = [];
+        if (req.body.images) {
+            images = typeof req.body.images === 'string' ? [req.body.images] : req.body.images;
         }
 
-        if(images !== undefined){
-            //delete image from cloudinary
-            for(let i = 0; i < product.images.length; i++){
-                await cloudinary.uploader.destroy(product.images[i].public_id)
+        try {
+            if (images.length > 0) {
+                // Delete old images from cloudinary
+                for (let i = 0; i < product.images.length; i++) {
+                    if (product.images[i].public_id) {
+                        await cloudinary.uploader.destroy(product.images[i].public_id);
+                    }
+                }
+
+                // Upload new images
+                const imageLinks = await Promise.all(
+                    images.map(async (image) => {
+                        // Verify the image is a valid base64 data URI
+                        if (!image.startsWith('data:image')) {
+                            throw new Error('Invalid image format');
+                        }
+
+                        const result = await cloudinary.uploader.upload(image, {
+                            folder: 'products',
+                            resource_type: 'auto'
+                        });
+
+                        return {
+                            public_id: result.public_id,
+                            url: result.secure_url
+                        };
+                    })
+                );
+
+                req.body.images = imageLinks;
             }
-
-            const imageLinks = []
-
-            for(let i = 0; i < images.length; i++){
-                
-                const result = await cloudinary.uploader.upload(images[i],{
-                    folder:'products'
-                });
-
-                imageLinks.push({
-                    public_id:result.public_id,
-                    url:result.secure_url
-                })
-            }
-            req.body.images = imageLinks
+        } catch (cloudinaryError) {
+            console.error('Cloudinary error details:', cloudinaryError);
+            return res.status(500).json({
+                message: 'Error processing images: ' + cloudinaryError.message,
+                success: false
+            });
         }
-         
-        product = await findByIdAndUpdate(req.params.id,req.body,{
-            new:true,
-            runValidators:true,
-            useFindAndModify: false
-        })
+
+        // Update product
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                useFindAndModify: false
+            }
+        );
 
         res.status(200).json({
             success: true,
-            product
-        })
-    } catch (error) {
-        res.status(500).json({
-            message:error.message,
-            success:false
-        })
-    }
-  }
+            product: updatedProduct
+        });
 
+    } catch (error) {
+        console.error('Update product error:', error);
+        res.status(500).json({
+            message: error.message,
+            success: false
+        });
+    }
+};
 
 
    const deleteProduct = async (req ,res)=>{

@@ -1,7 +1,7 @@
 import React from 'react'
 import Loader from './Loader'
 import PProduct from './PProduct'
-import { Link } from 'react-scroll'
+import { Link } from 'react-router-dom'
 
 const Products = ({products, loading}) => {
   
@@ -16,15 +16,15 @@ const Products = ({products, loading}) => {
               </span>
             </div>
             
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 mt-8">
+            <div className="grid md:grid-cols-4 grid-cols-2 md:gap-8 gap-4 pt-8 ">
               {products && products.map((product, i) => (
                 <PProduct key={product._id || i} product={product} />
               ))}
             </div>
             
             <div className='flex justify-center items-center pt-12'>
-              <Link to='/products' className='bg-blue-500 hover:bg-blue-600 px-8 py-2 md:text-xl text-lg font-medium text-white'>
-                <button>View More</button>
+              <Link to='/products' >
+                <button className='bg-blue-500 hover:bg-blue-600 px-8 py-2 md:text-xl text-lg font-medium text-white'>View More</button>
               </Link>
             </div>
           </>

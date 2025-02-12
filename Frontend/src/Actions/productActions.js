@@ -155,6 +155,8 @@ export const updateProduct = (id,newData) => async (dispatch)=>{
 }
 
 
+
+
 export const getAllReviews = (id) => async (dispatch) => {
     try{
         dispatch(allReviewRequest())

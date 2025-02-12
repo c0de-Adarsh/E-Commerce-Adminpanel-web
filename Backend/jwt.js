@@ -17,6 +17,7 @@ const generateToken = (userData) =>{
        return token
     } catch (error) {
         console.log('Error while creating token',error)
+    
     }
 }
 
@@ -26,8 +27,6 @@ const jwtAuthMiddleWare = async( req , res , next) =>{
        
         const authorization = req.headers.authorization;
         
-
-      
         if(!authorization){
             return res.status(400).json({
                 message:'Token Not Found',
@@ -38,7 +37,7 @@ const jwtAuthMiddleWare = async( req , res , next) =>{
 
         const token = req.headers.authorization.split(' ')[1]
        
-
+          
         if(!token){
             return res.status(402).json({
                 message:'Unauthorized',
@@ -71,7 +70,7 @@ const jwtAuthMiddleWare = async( req , res , next) =>{
             next()
         })
     } catch (error) {
-        console.log('Error during authentication',error)
+       
         res.status({
             error:'Internal Server Error',
             success:false
