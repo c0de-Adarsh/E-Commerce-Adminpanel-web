@@ -252,9 +252,9 @@ const getAllProducts = async (req, res) =>{
 
     try {
        
-        const userId = req.params.id
+        let userId = req.params.id
         
-        const product = await Product.findById(userId)
+        let product = await Product.findById(userId)
 
         if(!product){
             return res.status(401).json({
