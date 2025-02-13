@@ -306,52 +306,122 @@ try {
     })
 }
 }
-
- const updateProfile = async( req ,res) =>{
+const updateProfile = async (req, res) => {
     try {
-        
-        const userId = req.user._id
+        const userId = req.user._id;
+        const logUser = await User.findById(userId);
 
-        const logUser = await User.findById(userId)
-        const imageId = logUser.avatar[0].public_id;
-
-        await cloudinary.uploader.destroy(imageId)
-
-        const {newName , newImage , newEmail} = req.body
-
-        const mycloud = await cloudinary.uploader.upload(file.tempFilePath, {
-            folder: 'avatars',
-            width: 150,
-            crop: 'scale'
-        });
-       
-        const newUserData = {
-            name:newName,
-            email:newEmail,
-            avatar:{
-                public_id: mycloud.public_id,
-                url: mycloud.secure_url
-            }
+        if (!logUser) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        const user = await User.findById(userId,newUserData,{
-            new:true,
-            runValidators:true,
-        })
+        const { newName, newEmail } = req.body;
+        let newAvatar = logUser.avatar; // Purani image agar naye image nahi mile to
 
-        await user.save()
+        // Check if new image is provided
+        if (req.files && req.files.newImage) {
+            const imageFile = req.files.newImage; // File from frontend
+
+            // Delete old image from Cloudinary
+            if (logUser.avatar[0] && logUser.avatar[0].public_id) {
+                await cloudinary.uploader.destroy(logUser.avatar[0].public_id);
+            }
+
+            // Upload new image
+            const mycloud = await cloudinary.uploader.upload(imageFile.tempFilePath, {
+                folder: 'avatars',
+                width: 150,
+                crop: 'scale'
+            });
+
+            newAvatar = [{
+                public_id: mycloud.public_id,
+                url: mycloud.secure_url
+            }];
+        }
+
+        // Update user data
+        const newUserData = {
+            name: newName || logUser.name,
+            email: newEmail || logUser.email,
+            avatar: newAvatar
+        };
+
+        const user = await User.findByIdAndUpdate(userId, newUserData, {
+            new: true,
+            runValidators: true,
+        });
+
         res.status(200).json({
-            message:'User Updated Successfully',
-            success:true,
+            message: 'User Updated Successfully',
+            success: true,
             user
-        })
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
- }
+};
+
+
+// const updateProfile = async (req, res) => {
+//     try {
+//         const userId = req.user._id
+//         const logUser = await User.findById(userId)
+        
+//         // Get existing user data for update
+//         const { newName, newImage, newEmail } = req.body
+//         const newUserData = {
+//             name: newName || logUser.name,
+//             email: newEmail || logUser.email,
+//             avatar: logUser.avatar // Keep existing avatar by default
+//         }
+
+//         // Handle image update if new image is provided
+//         if (newImage) {
+//             // Delete old image if it exists
+//             if (logUser.avatar && logUser.avatar[0] && logUser.avatar[0].public_id) {
+//                 await cloudinary.uploader.destroy(logUser.avatar[0].public_id)
+//             }
+
+//             // Upload new image
+//             const mycloud = await cloudinary.uploader.upload(newImage, {
+//                 folder: 'avatars',
+//                 width: 150,
+//                 crop: 'scale'
+//             })
+
+//             newUserData.avatar = [{
+//                 public_id: mycloud.public_id,
+//                 url: mycloud.secure_url
+//             }]
+//         }
+
+//         // Update user with new data
+//         const user = await User.findByIdAndUpdate(
+//             userId,
+//             newUserData,
+//             {
+//                 new: true,
+//                 runValidators: true,
+//             }
+//         )
+
+//         res.status(200).json({
+//             message: 'User Updated Successfully',
+//             success: true,
+//             user
+//         })
+//     } catch (error) {
+//         console.error('Profile update error:', error)
+//         res.status(500).json({
+//             success: false,
+//             message: error.message
+//         })
+//     }
+// }
 
  const getAllUsers = async ( req, res) =>{
     try {
