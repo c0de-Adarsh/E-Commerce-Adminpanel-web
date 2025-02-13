@@ -159,8 +159,10 @@ export const getAllUsers = () => async (dispatch) =>{
         const {data} = await axios.get(`${API}/admin/users`,config)
 
         dispatch(allUserSuccess(data.AllUsers))
+       
     } catch (error) {
         dispatch(allUserFail(error.response.data.message))
+        
     }
 }
 

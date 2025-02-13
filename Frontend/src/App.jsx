@@ -26,6 +26,10 @@ import MyOrders from './Pages/MyOrders'
 import AllProducts from './Pages/AllProducts'
 import ProductList from './Components/ProductList'
 import UpdateProduct from './Pages/UpdateProduct'
+import OrderList from './Pages/OrderList'
+import UpdateOrders from './Pages/UpdateOrders'
+import UserList from './Pages/UserList'
+import ProductReview from './Pages/ProductReview'
 const App = () => {
 
   const dispatch = useDispatch()
@@ -81,6 +85,10 @@ const App = () => {
             <Route path='/contact' element={<Contact/>}/>
             <Route path="/admin/products" element={<ProductList/>} />
             <Route path="/admin/product/:id" element={ <UpdateProduct/> } />
+            <Route path="/admin/orders" element={<OrderList/>} />
+            <Route path="/admin/order/:id" element={<UpdateOrders/>} />
+            <Route path="/admin/users" element={<UserList/>} />
+            <Route path='/admin/reviews' element={<ProductReview />}/>
 
 
             {stripeApiKey &&

@@ -106,9 +106,9 @@ export const updateOrder = (id ,order) => async (dispatch) =>{
             }
         }
 
-        const {data} = await axios.put(`${API}/admin/order/${id}`,order)
+        const {data} = await axios.put(`${API}/admin/order/${id}`,order,config)
 
-        dispatch(updateOrderSuccess(data.order))
+        dispatch(updateOrderSuccess(data))
         dispatch(getOrderDetails(id))
 
         toast.success("Order Updated !") ;

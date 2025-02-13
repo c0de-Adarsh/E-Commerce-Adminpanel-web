@@ -3,8 +3,8 @@ import { LiaRupeeSignSolid } from 'react-icons/lia'
 import ReactStars from 'react-rating-stars-component'
 import { Link } from 'react-router'
 
-const Product = ({products}) => {
-console.log('helo',products)
+const Product = ({product}) => {
+
     const options = {
         edit: false,
         color: "rgba(20,20,20,0.1)",

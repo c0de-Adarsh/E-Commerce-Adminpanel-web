@@ -118,12 +118,13 @@ export const deleteProduct = (id) => async (dispatch) => {
                 }
             }
 
-            const { data } = await axios.delete(`/products/${id}`,config) ;
+            const { data } = await axios.delete(`${API}/products/${id}`,config) ;
 
             dispatch(deleteProductSuccess(data))
             toast.success("Product Deleted !");
             dispatch(getAllProductsForAdmin())
     } catch (error) {
+        console.log(error.response)
         dispatch(deleteProductFail(error.response.data.message))
         toast.error(error.response.data.message)
     }
@@ -167,6 +168,7 @@ export const getAllReviews = (id) => async (dispatch) => {
 
     }catch(error){
         dispatch(allReviewFail(error.response.data.message))
+        console.log(error.response.data.message)
     }
 }
 
