@@ -18,7 +18,7 @@ router.route('/islogin').get(jwtAuthMiddleWare,isLogin)
 router.route('/me').get(jwtAuthMiddleWare,getUserDetails)
 router.route('/me/update').put(jwtAuthMiddleWare,updateProfile)
 
-router.route('admin/users').get(jwtAuthMiddleWare,authorizationRole('admin'),getAllUsers)
+router.route('/admin/users').get(jwtAuthMiddleWare,authorizationRole('admin'),getAllUsers)
 
 router.route('/admin/user/:id').get(jwtAuthMiddleWare,authorizationRole('admin'),getUser)
 router.route('/admin/user/:id').put(jwtAuthMiddleWare,authorizationRole('admin'),updateUser)

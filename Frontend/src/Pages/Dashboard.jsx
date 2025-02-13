@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Metadata from '../Components/Metadata'
-import { Loader } from 'lucide-react'
+
 import { BiMenuAltLeft } from 'react-icons/bi'
 import SideBar from '../Components/SideBar'
 import { Doughnut, Line } from 'react-chartjs-2';
@@ -12,6 +12,7 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
+import Loader from '../Components/Loader'
 const Dashboard = () => {
 
   const { me } = useSelector(state => state.user)
