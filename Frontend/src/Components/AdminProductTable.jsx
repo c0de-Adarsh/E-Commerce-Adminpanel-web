@@ -17,9 +17,9 @@ const AdminProductTable = ({products}) => {
             return 'Invalid Date format'
         }
 
-        const day = [2]
-        const month = [1]
-        const year = [0]
+        const day = parts[2];    
+        const month = parts[1];
+        const year = parts[0];
 
         return `${day}-${month}-${year}`;
     }

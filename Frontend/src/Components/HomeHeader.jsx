@@ -3,6 +3,7 @@ import Search from './Search'
 import { Link as LinkSr } from 'react-scroll'
 import {MdOutlineKeyboardArrowDown} from 'react-icons/md'
 const HomeHeader = ({products}) => {
+
   return (
    <>
    <div className='min-h-screen pt-16 bg-gradient-to-br from-blue-800 to-blue-950'>

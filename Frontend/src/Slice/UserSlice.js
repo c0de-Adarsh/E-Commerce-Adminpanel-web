@@ -36,6 +36,7 @@ import { createSlice } from "@reduxjs/toolkit";
             state.isAuthenticated = true;
             state.user = action.payload;
             state.isLogin = true;
+            
         },
         loginFail:(state,action) =>{
             state.loading = false;
@@ -100,6 +101,7 @@ import { createSlice } from "@reduxjs/toolkit";
         },
         changePasswordSuccess:(state)=>{
             state.loading = false;
+            state.isUpdated = true; 
         },
         changePasswordFail:(state,action)=>{
             state.loading = false;

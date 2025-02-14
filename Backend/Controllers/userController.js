@@ -275,7 +275,7 @@ try {
             })
         }
     
-        if (req.body.oldPassword !== req.body.confirmPassword) {
+        if (req.body.newPassword !== req.body.confirmPassword) {
             return res.status(401).json({
                 message: 'Password is Not Match'
             })

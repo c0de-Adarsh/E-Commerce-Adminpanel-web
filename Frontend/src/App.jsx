@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import "react-toastify/dist/ReactToastify.css";
 import NavBar from './Components/NavBar'
 import Home from './Pages/Home'
 import About from './Pages/About'
@@ -30,6 +31,11 @@ import OrderList from './Pages/OrderList'
 import UpdateOrders from './Pages/UpdateOrders'
 import UserList from './Pages/UserList'
 import ProductReview from './Pages/ProductReview'
+import Account from './Pages/Account'
+import UpdateProfile from './Pages/UpdateProfile'
+import UpdatePassword from './Pages/UpdatePassword'
+import OrderDetails from './Pages/OrderDetails';
+import PProduct from './Components/PProduct';
 const App = () => {
 
   const dispatch = useDispatch()
@@ -81,7 +87,8 @@ const App = () => {
             <Route path='/order/confirm' element={<Confirm />} />
             <Route path='/success' element={<Success/>}/>
             <Route path="/orders" element={<MyOrders />} />
-            <Route path='/products' element={<AllProducts />} />
+            <Route path="/products" element={<AllProducts />} />
+        <Route path="/products/:keyword" element={<AllProducts />} />
             <Route path='/contact' element={<Contact/>}/>
             <Route path="/admin/products" element={<ProductList/>} />
             <Route path="/admin/product/:id" element={ <UpdateProduct/> } />
@@ -89,7 +96,12 @@ const App = () => {
             <Route path="/admin/order/:id" element={<UpdateOrders/>} />
             <Route path="/admin/users" element={<UserList/>} />
             <Route path='/admin/reviews' element={<ProductReview />}/>
-
+            <Route path='/account' element={<Account />}/>
+            <Route path="/updateProfile" element={<UpdateProfile />} />
+            <Route path='/updatePassword' element={<UpdatePassword/>}/>
+            <Route path="/order/:id" element={<OrderDetails />} />
+            <Route path="/pproducts" element={<PProduct/>} />
+        <Route path="/pproducts/:searchKey" element={<PProduct/>} />
 
             {stripeApiKey &&
 

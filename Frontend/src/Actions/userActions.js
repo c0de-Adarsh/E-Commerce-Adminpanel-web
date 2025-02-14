@@ -16,7 +16,7 @@ export const register = (formData) => async (dispatch) => {
         }
         
         const { data } = await axios.post(`${API}/registeruser`, formData, config)
-        console.log(data)
+       
         localStorage.setItem('token', data.token)
         dispatch(registerSuccess(data))
         toast.success('Register successfully!')
@@ -94,29 +94,68 @@ export const me = () => async (dispatch) =>{
 }
 
 
-export const updateMe = (userData) => async (dispatch) =>{
-
+export const updateMe = (userData) => async (dispatch) => {
     try {
-       
         dispatch(updateProfileRequest())
-
+        
         const config = {
-            headers:{
+            headers: {
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
-
-        const {data} = await axios.put(`${API}/me/update`,config,userData)
-
+        
+        const { data } = await axios.put(`${API}/me/update`, userData, config)
+        
         dispatch(updateProfileSuccess(data))
         dispatch(getMeSuccess(data.user))
         toast.success('Profile Updated Successfully')
     } catch (error) {
-        dispatch(updateProfileFail(error.response.data.message))
-        console.log(error.response.data.message)
-        toast.error(error.response.data.message)
+        dispatch(updateProfileFail(error.response?.data?.message || "Update failed"))
+        console.log(error.response?.data?.message || error.message)
+        toast.error(error.response?.data?.message || "Update failed")
     }
 }
+
+
+
+
+// export const updateMe = (userData) => async (dispatch) => {
+//     try {
+//         dispatch(updateProfileRequest())
+        
+//         // Create FormData object
+//         const formData = new FormData()
+//         formData.append('newName', userData.newName)
+//         formData.append('newEmail', userData.newEmail)
+        
+//         // Only append image if it exists
+//         if (userData.newImage) {
+//             // Convert base64 to file
+//             const base64Response = await fetch(userData.newImage)
+//             const blob = await base64Response.blob()
+//             const file = new File([blob], 'profile.jpg', { type: 'image/jpeg' })
+//             formData.append('newImage', file)
+//         }
+
+//         const config = {
+//             headers: {
+//                 'Content-Type': 'multipart/form-data',
+//                 Authorization: `Bearer ${localStorage.getItem('token')}`
+//             }
+//         }
+
+//         const { data } = await axios.put(`${API}/me/update`, formData, config)
+//         console.log(data)
+//         dispatch(updateProfileSuccess(data))
+//         dispatch(getMeSuccess(data.user))
+//         toast.success('Profile Updated Successfully')
+//     } catch (error) {
+//         dispatch(updateProfileFail(error.response?.data?.message || 'Update failed'))
+//         console.log(error.response?.data?.message || error.message)
+//         toast.error(error.response?.data?.message || 'Update failed')
+//     }
+// }
 
 export const changePassword = (userData) => async (dispatch) =>{
 
@@ -130,14 +169,15 @@ export const changePassword = (userData) => async (dispatch) =>{
             }
         }
 
-        const {data} = await axios.put(`${API}/password/update`,config,userData)
+        const {data} = await axios.put(`${API}/password/update`,userData,config)
 
         dispatch(changePasswordSuccess())
-
+   console.log(data)
         toast.success('Password Updated successfully')
     } catch (error) {
         dispatch(changePasswordFail(error.response.data.message))
         toast.error(error.response.data.message) ;
+        console.log(error.response.data.message)
     }
 }
 
