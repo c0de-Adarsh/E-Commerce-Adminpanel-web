@@ -40,11 +40,11 @@ const MenuBar = () => {
     localStorage.removeItem('token');
     dispatch(removeAllWhenLogout());
     dispatch(setIsLoginFalse());
+    // Move this line before navigation
     toast.success("Logout Successful!");
     setIsOpen(false);
     navigate('/');
   };
-
   return (
     <div className="relative" ref={menuRef}>
       <button
@@ -55,7 +55,7 @@ const MenuBar = () => {
           <img 
             src={me.avatar[0].url} 
             alt="Profile" 
-            className="h-8 w-8 rounded-full object-cover"
+            className="h-8 w-8 rounded-full  object-cover"
           />
         ) : (
           <img 

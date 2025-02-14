@@ -113,19 +113,19 @@ const App = () => {
             }
           </Routes>
           <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-            className="mt-14 font-bold  "
-
-          />
+  position="top-right"
+  autoClose={2000} 
+  hideProgressBar={false}
+  newestOnTop={true}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss={false}  
+  draggable
+  pauseOnHover={false}  
+  theme="light"
+  limit={1}  
+   className="mt-14 font-bold  "
+/>
         </BrowserRouter>
       </div>
     </>

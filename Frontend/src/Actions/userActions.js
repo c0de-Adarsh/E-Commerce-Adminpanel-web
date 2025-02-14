@@ -3,54 +3,61 @@ import {allUserFail, allUserRequest, allUserSuccess, changePasswordFail, changeP
 import axios from 'axios'
 import API from '../Utils';
 import { toast } from 'react-toastify';
+import { clearErrors } from '../Slice/ProductSlice';
 
 
-export const register = (formData) => async (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
     try {
-        dispatch(registerRequest())
-        
+        dispatch(loginRequest())
         const config = {
             headers: {
-                'Content-Type': 'multipart/form-data' 
+                'Content-Type': 'application/json'
             }
-        }
-        
-        const { data } = await axios.post(`${API}/registeruser`, formData, config)
-       
+        };
+        const { data } = await axios.post(`${API}/loginuser`, { email, password }, config)
         localStorage.setItem('token', data.token)
-        dispatch(registerSuccess(data))
-        toast.success('Register successfully!')
-    } catch (error) {
-        dispatch(registerFail(error.response.data.message))
-        if(error.response.data.message.includes('duplicate')) {
-            toast.error('User Already Exist')
-        } else {
-            toast.error(error.response.data.message)
-        }
+        dispatch(loginSuccess(data))
+        toast.success("Login Successful!", {
+            autoClose: 2000,
+            onClose: () => {
+                dispatch(clearErrors())
+            }
+        });
+    }
+    catch (err) {
+        dispatch(loginFail(err.response.data.message));
+        toast.error(err.response?.data?.message || "Login failed", {
+            autoClose: 2000,
+            onClose: () => {
+                dispatch(clearErrors())
+            }
+        });
     }
 }
 
-export const login = (email , password) => async (dispatch) =>{
-
+export const register = (userData) => async (dispatch) => {
     try {
-        
-        dispatch(loginRequest())
-
-        const config = {
-            headers:{
-                'Content-Type': 'application/json'
+        dispatch(registerRequest())
+        const { data } = await axios.post(`${API}/registeruser`, userData)
+        localStorage.setItem('token', data.token)
+        dispatch(registerSuccess(data));
+        toast.success("Registration Successful!", {
+            autoClose: 2000,
+            onClose: () => {
+                dispatch(clearErrors())
             }
-        }
-
-        const {data} = await axios.post(`${API}/loginuser`,{email,password},config)
-
-        localStorage.setItem('token',data.token)
-        dispatch(loginSuccess(data))
-        toast.success('Login Successfuly')
-    } catch (error) {
-        dispatch(loginFail(error.response.data.message))
-        console.log(error.response.data.message)
-        toast.error(error.response.data.message)
+        });
+    } catch (err) {
+        dispatch(registerFail(err.response.data.message))
+        const errorMsg = err.response?.data?.message?.includes("duplicate") 
+            ? "User already exists" 
+            : (err.response?.data?.message || "Registration failed");
+        toast.error(errorMsg, {
+            autoClose: 2000,
+            onClose: () => {
+                dispatch(clearErrors())
+            }
+        });
     }
 }
 

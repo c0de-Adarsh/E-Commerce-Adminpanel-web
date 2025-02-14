@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { ToastContainer } from 'react-toastify';
@@ -7,6 +7,7 @@ import { MdOutlineAccountCircle } from 'react-icons/md';
 import { login, register } from '../Actions/userActions';
 import Metadata from '../Components/Metadata';
 import 'react-toastify/dist/ReactToastify.css';
+import { clearErrors } from '../Slice/ProductSlice';
 
 const FormInput = ({ icon: Icon, type, value, onChange, placeholder, rightIcon: RightIcon }) => (
   <div className="relative rounded pl-3 border border-gray-500 py-1 flex items-center justify-around">
@@ -18,7 +19,11 @@ const FormInput = ({ icon: Icon, type, value, onChange, placeholder, rightIcon: 
       placeholder={placeholder}
       className="w-full pl-4 py-1 pr-4 outline-none"
     />
-    {RightIcon && <RightIcon />}
+     {RightIcon && (
+      <div className="absolute right-3"> {/* Position absolutely and move from right edge */}
+        <RightIcon />
+      </div>
+    )}
   </div>
 );
 
@@ -104,24 +109,16 @@ const SignUpLogin = () => {
   if (isLogin) {
     navigate('/');
   }
-
+  useEffect(() => {
+    return () => {
+        dispatch(clearErrors());  // Clear errors when component unmounts
+    };
+}, [dispatch]);
   return (
     <>
       <Metadata title={formType} />
       <div className="min-h-screen bg-gray-100 pt-14 flex justify-center">
-      <ToastContainer
-                    position="top-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                    className="mt-14 font-bold"
-                />
+     
         <div className="pt-10 flex-col flex md:w-1/3 w-full md:px-0 px-4 pb-28 h-90 justify-center">
           <div className={`bg-white rounded-md shadow-md shadow-gray-400 w-full ${
             formType === 'Register' ? 'md:h-[80vh]' : 'md:h-[70vh]'

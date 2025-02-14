@@ -17,11 +17,12 @@ const NavBar = () => {
     const dispatch = useDispatch()
   
 
-    const logOut = () =>{
+    const logOut = () => {
       localStorage.removeItem('token')
-        dispatch(setIsLoginFalse())
-        dispatch(setL)
-    }
+      dispatch(setIsLoginFalse())
+      dispatch(setLogoutNotifyTrue())
+      navigate('/')
+ }
 
 
   return (

@@ -31,20 +31,20 @@ import { createSlice } from "@reduxjs/toolkit";
             state.loading = true;
             state.isAuthenticated = false;
         },
-        loginSuccess:(state,action) =>{
+        loginSuccess: (state, action) => {
             state.loading = false;
             state.isAuthenticated = true;
             state.user = action.payload;
             state.isLogin = true;
-            
-        },
-        loginFail:(state,action) =>{
+            state.error = null;  // Reset error on success
+          },
+          loginFail: (state, action) => {
             state.loading = false;
             state.isAuthenticated = false;
             state.user = null;
-            state.error = action.payload
-            state.wrongCredentialsErr = true
-        },
+            state.error = action.payload;
+            state.wrongCredentialsErr = true;
+          },
         registerRequest:(state) =>{
             state.loading = true;
             state.isAuthenticated = false
@@ -153,9 +153,11 @@ import { createSlice } from "@reduxjs/toolkit";
             state.error = action.payload
         },
 
-        clearErrors:(state)=>{
-            state.error = null
-        }
+        clearErrors: (state) => {
+            state.error = null;
+            state.wrongCredentialsErr = false;
+            state.userExistErr = false;
+          }
       }
   })
 
