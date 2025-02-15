@@ -83,7 +83,7 @@ const Shipping = () => {
                
                 <div className='relative flex justify-around px-3 py-1 items-center border border-gray-500'>
                 <TbMapPinCode className='text-gray-500' size={26} />
-                <input type="text"  onChange={(e) => setPinCode(e.target.value)} placeholder='Enter City' required value={pinCode} className=' w-full pl-4 outline-none py-1 pr-4'/>
+                <input type="text"  onChange={(e) => setPinCode(e.target.value)} placeholder='Enter Pincode' required value={pinCode} className=' w-full pl-4 outline-none py-1 pr-4'/>
                 </div>
                 
 
