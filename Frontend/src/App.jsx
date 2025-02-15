@@ -36,6 +36,10 @@ import UpdateProfile from './Pages/UpdateProfile'
 import UpdatePassword from './Pages/UpdatePassword'
 import OrderDetails from './Pages/OrderDetails';
 import PProduct from './Components/PProduct';
+import Footer from './Components/Footer';
+import ScrollToTopWhenRouteChanges from './Components/ScrollTopRouteChange';
+import {NotFound} from './Pages/NotFound'
+import { UpdateUser } from './Pages/UpdateUser';
 const App = () => {
 
   const dispatch = useDispatch()
@@ -58,7 +62,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(me())
-    
+
   }, [dispatch, isLogin, isUpdated])
 
   useEffect(() => {
@@ -73,8 +77,10 @@ const App = () => {
     <>
       <div>
         <BrowserRouter>
+        <ScrollToTopWhenRouteChanges />
           <NavBar />
           <Routes>
+            <Route path='*' element={<NotFound />}/>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
@@ -85,23 +91,24 @@ const App = () => {
             <Route path='/cart' element={<Cart />} />
             <Route path="/order/shipping" element={<Shipping />} />
             <Route path='/order/confirm' element={<Confirm />} />
-            <Route path='/success' element={<Success/>}/>
+            <Route path='/success' element={<Success />} />
             <Route path="/orders" element={<MyOrders />} />
             <Route path="/products" element={<AllProducts />} />
-        <Route path="/products/:keyword" element={<AllProducts />} />
-            <Route path='/contact' element={<Contact/>}/>
-            <Route path="/admin/products" element={<ProductList/>} />
-            <Route path="/admin/product/:id" element={ <UpdateProduct/> } />
-            <Route path="/admin/orders" element={<OrderList/>} />
-            <Route path="/admin/order/:id" element={<UpdateOrders/>} />
-            <Route path="/admin/users" element={<UserList/>} />
-            <Route path='/admin/reviews' element={<ProductReview />}/>
-            <Route path='/account' element={<Account />}/>
+            <Route path="/products/:keyword" element={<AllProducts />} />
+            <Route path='/contact' element={<Contact />} />
+            <Route path="/admin/products" element={<ProductList />} />
+            <Route path="/admin/product/:id" element={<UpdateProduct />} />
+            <Route path="/admin/orders" element={<OrderList />} />
+            <Route path="/admin/order/:id" element={<UpdateOrders />} />
+            <Route path="/admin/users" element={<UserList />} />
+            <Route path='/admin/reviews' element={<ProductReview />} />
+            <Route path='/account' element={<Account />} />
             <Route path="/updateProfile" element={<UpdateProfile />} />
-            <Route path='/updatePassword' element={<UpdatePassword/>}/>
+            <Route path='/updatePassword' element={<UpdatePassword />} />
             <Route path="/order/:id" element={<OrderDetails />} />
-            <Route path="/pproducts" element={<PProduct/>} />
-        <Route path="/pproducts/:searchKey" element={<PProduct/>} />
+            <Route path="/pproducts" element={<PProduct />} />
+            <Route path="/pproducts/:searchKey" element={<PProduct />} />
+            <Route path="/admin/user/:id" element={<UpdateUser/>} />
 
             {stripeApiKey &&
 
@@ -113,19 +120,21 @@ const App = () => {
             }
           </Routes>
           <ToastContainer
-  position="top-right"
-  autoClose={2000} 
-  hideProgressBar={false}
-  newestOnTop={true}
-  closeOnClick
-  rtl={false}
-  pauseOnFocusLoss={false}  
-  draggable
-  pauseOnHover={false}  
-  theme="light"
-  limit={1}  
-   className="mt-14 font-bold  "
-/>
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+            theme="light"
+            limit={1}
+            className="mt-14 font-bold  "
+          />
+
+          <Footer />
         </BrowserRouter>
       </div>
     </>

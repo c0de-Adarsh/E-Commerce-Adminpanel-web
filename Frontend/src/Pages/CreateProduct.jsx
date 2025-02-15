@@ -29,8 +29,9 @@ const CreateProduct = () => {
         "Womens",
         "Books",
         "Footwear",
-        "Home",
-        "Sports"
+        "Games",
+        "Sports",
+       
     ]
 
     const productHandler = (e) => {

@@ -1,29 +1,32 @@
 import axios from "axios"
-import { adminProductFail, adminProductRequest, adminProductSuccess, allProductRequest, allProductSuccess, allReviewFail, allReviewRequest, allReviewSuccess, clearErrors, deleteProductFail, deleteProductRequest, deleteProductSuccess, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, everyProductFail, everyProductRequest, everyProductSuccess, getCategoryProductsFail, getCategoryProductsRequest, getCategoryProductsSuccess, newProductFail, newProductRequest, newProductSuccess, newReviewFail, newReviewRequest, newReviewSuccess,  updateProductFail, updateProductRequest, updateProductSuccess } from "../Slice/ProductSlice"
+import { adminProductFail, adminProductRequest, adminProductSuccess, allProductFail, allProductRequest, allProductSuccess, allReviewFail, allReviewRequest, allReviewSuccess, clearErrors, deleteProductFail, deleteProductRequest, deleteProductSuccess, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, everyProductFail, everyProductRequest, everyProductSuccess, getCategoryProductsFail, getCategoryProductsRequest, getCategoryProductsSuccess, newProductFail, newProductRequest, newProductSuccess, newReviewFail, newReviewRequest, newReviewSuccess,  updateProductFail, updateProductRequest, updateProductSuccess } from "../Slice/ProductSlice"
 import { productDetailsRequest, productDetailsSuccess, productDetailsFail, } from '../Slice/ProductDetailsSlice'
 import API from "../Utils"
 import { toast } from "react-toastify"
 
 export const getProducts = (keyword = "", currentPage = 1, price = [0, 25000], category , ratings = 0) => async (dispatch) => {
+    try {
+        dispatch(allProductRequest());
 
-   try {
-     dispatch(allProductRequest())
- 
-     let link = `${API}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&rating[gte]=${ratings}`
- 
- 
- if (category) {
-     link += `${API}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&rating[gte]=${ratings}`;
- }
- 
- const { data } = await axios.get(link)
-    
-    dispatch(allProductSuccess(data))
-   } catch (error) {
-      dispatch(error.response.data.message)
-   }
+        let link = `${API}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&rating[gte]=${ratings}`
 
+        if (category) {
+            link = `${API}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&rating[gte]=${ratings}`
+        }
+
+
+        const { data } = await axios.get(link) 
+
+        console.log(data)
+
+        // console.log(data)
+        dispatch(allProductSuccess(data));
+
+    } catch (err) {
+        dispatch(allProductFail(err.message))
+    }
 }
+
 
 export const getProductDetails = (id) => async (dispatch) =>{
 
