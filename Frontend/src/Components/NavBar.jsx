@@ -87,10 +87,10 @@ const NavBar = () => {
    <div className={`${toggle ? 'hidden': 'flex'} md:hidden fixed top-12 nav`}>
     <div className='bg-blue-950 w-screen h-screen bg-opacity-95 pt-24 '>
         <ul className='text-white flex gap-24 flex-col justify-center items-center'>
-        <Link className='hover:text-orange-400'>Home</Link>
-        <Link className='hover:text-orange-400'>Product</Link>
-        <Link className='hover:text-orange-400'>Contact</Link>
-        <Link className='hover:text-orange-400'>About</Link>
+        <Link className='hover:text-orange-400' to='/'>Home</Link>
+        <Link className='hover:text-orange-400' to='/products'>Product</Link>
+        <Link className='hover:text-orange-400' to='/contact'>Contact</Link>
+        <Link className='hover:text-orange-400' to='/about'>About</Link>
         </ul>
     </div>
    </div>
